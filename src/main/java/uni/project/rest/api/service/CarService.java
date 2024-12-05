@@ -9,15 +9,7 @@ public interface CarService {
 Car createCar(Car car);
 List<Car> getAllCars();
 Car getCarById(int id);
-Car updateCar(Car car);
+Car updateCar(int id,Car newCar);
 void deleteCarById(int id);
-
-
-
-//    void createCar(Car car);
-//    List<Car> getAllCars();
-//    Car getCarById(int id);
-//    Car updateCar(Car car);
-//    void deleteCarById(int id);
 
 }

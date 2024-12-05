@@ -33,8 +33,13 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public Car updateCar(Car car) {
-        return carDAO.updateCar(car);
+    public Car updateCar(int id, Car newCar) {
+        Car getCar = carDAO.getCarById(id);
+        getCar.setLicensePlate(newCar.getLicensePlate());
+        getCar.setModel(newCar.getModel());
+        getCar.setYear(newCar.getYear());
+        getCar.setMake(newCar.getMake());
+        return getCar;
     }
 
     @Override
