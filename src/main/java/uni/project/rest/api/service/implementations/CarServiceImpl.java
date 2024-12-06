@@ -1,19 +1,25 @@
-package uni.project.rest.api.service;
+package uni.project.rest.api.service.implementations;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uni.project.rest.api.dao.CarDAO;
+import uni.project.rest.api.dao.interfaces.CarDAO;
 import uni.project.rest.api.entity.Car;
+import uni.project.rest.api.service.interfaces.CarService;
 
 import java.util.List;
 
 @Service
 public class CarServiceImpl implements CarService {
 
-
+    @Autowired
     private CarDAO carDAO;
+
+    @Autowired
+    public CarServiceImpl(CarDAO carDAO) {
+        this.carDAO = carDAO;
+    }
 
     @Override
     @Transactional
@@ -22,9 +28,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return carDAO.getAllCars();
+    public List<Car> getAllCars(String make, long garage, int fromYear, int toYear) {
+        return carDAO.getAllCars(make, garage, fromYear, toYear);
     }
+
 
     @Override
     public Car getCarById(int id) {
@@ -43,13 +50,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public void deleteCarById(int id) {
         carDAO.deleteCarById(id);
-    }
-
-    @Autowired
-    public CarServiceImpl(CarDAO carDAO) {
-        this.carDAO = carDAO;
     }
 
 

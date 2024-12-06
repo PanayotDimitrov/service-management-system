@@ -10,7 +10,7 @@ public class Car {
     // define fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, updatable = false, name = "id")
+    @Column(unique = true, nullable = false, updatable = false, name = "carId")
     private long id;
 
     @Column(nullable = false, name = "make")
@@ -19,11 +19,12 @@ public class Car {
     @Column(nullable = false, name = "model")
     private String model;
 
-    @Column(nullable = false, name = "year")
+    @Column(nullable = false, name = "production_year")
     private int year;
 
     @Column(nullable = false,name = "license_plate")
     private String licensePlate;
+
 
     public Car() {
     }
@@ -37,6 +38,8 @@ public class Car {
 
 
     // Define getters and setters
+
+
 
 
     public long getId() {

@@ -1,11 +1,13 @@
-package uni.project.rest.api.dao;
+package uni.project.rest.api.dao.Implementations;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import uni.project.rest.api.dao.interfaces.CarDAO;
 import uni.project.rest.api.entity.Car;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 public class CarDAOImpl implements CarDAO {
 
     //Define field for entity manager;
+//    @PersistenceContext
     private EntityManager entityManager;
 
     // set up constructor injection
@@ -32,16 +35,22 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public List<Car> getAllCars() {
+    public List<Car> getAllCars(String make, long garage, int fromYear, int toYear) {
 
-        // create a query
-        TypedQuery<Car> query = entityManager.createQuery("FROM Car", Car.class);
+//        TypedQuery<Car> query = entityManager.createQuery("SELECT c FROM Car c", Car.class);
+        TypedQuery<Car> query = entityManager.createQuery(
+                "SELECT c FROM Car c WHERE c.make = :make AND c.year BETWEEN :fromYear AND :toYear",
+                Car.class
+        );
 
-        // execute query and get result list
-        List<Car> cars = query.getResultList();
+        // Set the parameters
+        query.setParameter("make", make);
+        query.setParameter("fromYear", fromYear);
+        query.setParameter("toYear", toYear);
 
-        // return the results
-        return cars;
+        // Execute and return the results
+        return query.getResultList();
+
 
     }
 
