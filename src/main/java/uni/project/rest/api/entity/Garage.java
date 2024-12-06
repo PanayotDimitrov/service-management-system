@@ -2,13 +2,15 @@ package uni.project.rest.api.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "garage")
 public class Garage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, updatable = false, name = "id")
+    @Column(unique = true, nullable = false, updatable = false, name = "garageId")
     private long id;
 
     @Column(unique = false,updatable = true, name = "capacity")
