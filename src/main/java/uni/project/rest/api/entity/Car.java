@@ -10,7 +10,7 @@ public class Car {
     // define fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(unique = true, nullable = false, updatable = false, name = "id")
     private long id;
 
     @Column(nullable = false, name = "make")
