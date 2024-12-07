@@ -28,11 +28,20 @@ public class GarageController {
         garageService.addGarage(createGarageDTO);
     }
 
+//    --------------------------------------------------------------------------------------------------------------------------------
+
     @GetMapping("/garages")
     @CrossOrigin("http://localhost:3000/garages")
-    public List<Garage> getGarageByCity(@RequestParam String city) {
-        return garageService.getAllGaragesByCity(city);
+    public List<Garage> getGarageByCity(@RequestParam(required = false) String city) {
+        if (city == null) {
+            return garageService.getAllGarages();
+        }else {
+            return garageService.getAllGaragesByCity(city);
+        }
     }
+
+//    --------------------------------------------------------------------------------------------------------------------------------
+
 
     @GetMapping("/garages/{id}")
     @CrossOrigin("http://localhost:3000/garages/{id}")

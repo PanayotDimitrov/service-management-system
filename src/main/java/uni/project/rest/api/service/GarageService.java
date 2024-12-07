@@ -77,16 +77,6 @@ public class GarageService {
     }
 
 
-//    public List<ResponseGarageDTO> getAllGaragesByCity(String city) {
-//        List<ResponseGarageDTO> garages = garageRepository.findByCity(city);
-//        return garages.stream()
-//                .map(garage -> new ResponseGarageDTO(
-//                        garage.getId(),
-//                        garage.getName(),
-//                        garage.getCity(),
-//                        garage.getCapacity()))
-//                .collect(Collectors.toList());
-//    }
     public List<Garage> getAllGaragesByCity(String city) {
         TypedQuery<Garage> filteredGarages = entityManager.createQuery(
                 "select e from Garage e where e.city = :city", Garage.class
@@ -94,6 +84,11 @@ public class GarageService {
         filteredGarages.setParameter("city", city);
         return filteredGarages.getResultList();
     }
+
+    public List<Garage> getAllGarages() {
+        return garageRepository.findAll();
+    }
+
 
     public List<GarageDailyAvailabilityReportDTO> getGarageDailyAvailabilityReport(Long garageId, LocalDate startDate, LocalDate endDate) {
         List<Object[]> reportData = garageRepository.findGarageDailyAvailabilityReport(garageId, startDate, endDate);
