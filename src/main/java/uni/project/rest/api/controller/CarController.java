@@ -12,12 +12,15 @@ import uni.project.rest.api.service.CarService;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://Localhost:3000")
 public class CarController {
 
     @Autowired
     private CarService carService;
 
+
     @GetMapping("/cars")
+    @CrossOrigin("http://Localhost:3000/cars")
     public List<Car> getAllCars(@RequestParam String carMake,
                                            @RequestParam Long garageId,
                                            @RequestParam int fromYear,
@@ -27,21 +30,25 @@ public class CarController {
     }
 
     @GetMapping("/cars/{id}")
+    @CrossOrigin("http://Localhost:3000/cars/{id}")
     public Car getCarById(@PathVariable int id) {
         return carService.getCarById(id);
     }
 
     @PostMapping("/cars")
+    @CrossOrigin("http://Localhost:3000/cars")
     public void createCar (@RequestBody CreateCarDTO createCarDTO) {
         carService.addCar(createCarDTO);
     }
 
     @PutMapping("/cars/{id}")
+    @CrossOrigin("http://Localhost:3000/cars/{id}")
     public void updateCar(@PathVariable Long id, @RequestBody UpdateCarDTO updateCarDTO) {
         carService.updateCar(id,updateCarDTO);
     }
 
     @DeleteMapping("/cars/{id}")
+    @CrossOrigin("http://Localhost:3000/cars/{id}")
     public void deleteCar(@PathVariable int id) {
         carService.deleteCarById(id);
     }
