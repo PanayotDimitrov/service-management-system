@@ -12,7 +12,7 @@ public class CreateCarDTO {
 
     private String make;
     private String model;
-    private int year;
+    private int productionYear;
     private String licensePlate;
     private List<Long> garageIds;
 

@@ -7,11 +7,11 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-@Setter
 @Data
+@Setter
 public class ResponseCarDTO {
 
-    private int id;
+    private Long id;
     private String make;
     private String model;
     private int productionYear;

@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Data
+@Setter
 public class UpdateGarageDTO {
 
     private String name;

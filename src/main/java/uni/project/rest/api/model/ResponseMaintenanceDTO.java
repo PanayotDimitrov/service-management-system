@@ -5,12 +5,12 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 @Getter
-@Setter
 @Data
+@Setter
 public class ResponseMaintenanceDTO {
 
-    private long id;
-    private long carId;
+    private Long id;
+    private Long carId;
     private String carName;
     private String serviceType;
     private LocalDate scheduledDate;

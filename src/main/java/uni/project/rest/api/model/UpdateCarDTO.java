@@ -6,11 +6,11 @@ import lombok.Setter;
 
 import java.util.List;
 @Getter
-@Setter
 @Data
+@Setter
 public class UpdateCarDTO {
 
-    private long id;
+    private Long id;
     private String make;
     private String model;
     private int productionYear;
