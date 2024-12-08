@@ -1,13 +1,12 @@
 package uni.project.rest.api.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 @Getter
 @Data
 @Setter
+@NoArgsConstructor
 public class UpdateCarDTO {
 
     private Long id;

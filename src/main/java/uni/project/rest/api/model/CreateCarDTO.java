@@ -1,13 +1,13 @@
 package uni.project.rest.api.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 
 @Getter
 @Setter
 @Data
+@NoArgsConstructor
 public class CreateCarDTO {
 
     private String make;

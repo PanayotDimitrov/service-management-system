@@ -1,12 +1,11 @@
 package uni.project.rest.api.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Data
 @Setter
+@NoArgsConstructor
 public class UpdateGarageDTO {
 
     private String name;
