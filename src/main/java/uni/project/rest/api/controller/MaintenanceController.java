@@ -2,10 +2,12 @@ package uni.project.rest.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uni.project.rest.api.entity.Garage;
 import uni.project.rest.api.entity.Maintenance;
 import uni.project.rest.api.model.*;
 import uni.project.rest.api.repository.GarageRepository;
@@ -20,11 +22,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MaintenanceController {
 
-    private final MaintenanceService maintenanceService;
-    private final GarageRepository garageRepository;
+    @Autowired
+    private MaintenanceService maintenanceService;
+
+    @Autowired
+    private GarageRepository garageRepository;
 
     @PostMapping
-    public ResponseMaintenanceDTO createMaintenance(@RequestBody @Valid CreateMaintenanceDTO dto) {
+    public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
         Maintenance createdMaintenance = maintenanceService.createMaintenance(dto);
 
         // Map to Response DTO
@@ -34,9 +39,18 @@ public class MaintenanceController {
         response.setGarageId(createdMaintenance.getGarageId());
         response.setServiceType(createdMaintenance.getServiceType());
         response.setScheduledDate(createdMaintenance.getScheduledDate());
-        // Assuming carName and garageName need to be fetched from repositories
-        response.setCarName(garageRepository.findById(createdMaintenance.getCarId()).orElseThrow().getName());
-        response.setGarageName(garageRepository.findById(createdMaintenance.getGarageId()).orElseThrow().getName());
+
+        String carName = garageRepository.findById(createdMaintenance.getCarId())
+                        .map(Garage::getName)
+                                .orElse("Unknown car");
+
+        String garageName = garageRepository.findById(createdMaintenance.getGarageId())
+                        .map(Garage::getName)
+                .orElse("Unknown garage");
+
+        response.setCarName(carName);
+        response.setGarageName(garageName);
+
         maintenanceService.createMaintenance(dto);
         return null;
     }

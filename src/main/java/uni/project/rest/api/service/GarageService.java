@@ -30,14 +30,6 @@ public class GarageService {
 @Transactional
     public Garage createGarage(Garage garage){
 
-//        Garage garage = new Garage();
-//
-//        garage.setName(createGarageDTO.getName());
-//        garage.setLocation(createGarageDTO.getLocation());
-//        garage.setCity(createGarageDTO.getCity());
-//        garage.setCapacity(createGarageDTO.getCapacity());
-
-//        return garageRepository.save(garage);
         entityManager.persist(garage);
         return garage;
     }

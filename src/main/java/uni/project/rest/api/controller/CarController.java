@@ -10,6 +10,7 @@ import uni.project.rest.api.model.UpdateCarDTO;
 import uni.project.rest.api.service.CarService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://Localhost:3000")
@@ -31,9 +32,10 @@ public class CarController {
 
     @GetMapping("/cars/{id}")
     @CrossOrigin("http://Localhost:3000/cars/{id}")
-    public Car getCarById(@PathVariable int id) {
+    public Car getCarById(@PathVariable Long id) {
         return carService.getCarById(id);
     }
+
 
     @PostMapping("/cars")
     @CrossOrigin("http://Localhost:3000/cars")
@@ -49,7 +51,7 @@ public class CarController {
 
     @DeleteMapping("/cars/{id}")
     @CrossOrigin("http://Localhost:3000/cars/{id}")
-    public void deleteCar(@PathVariable int id) {
+    public void deleteCar(@PathVariable Long id) {
         carService.deleteCarById(id);
     }
 }

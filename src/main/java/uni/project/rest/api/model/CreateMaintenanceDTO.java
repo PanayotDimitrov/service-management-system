@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class CreateMaintenanceDTO {
+
     private long garageId;
     private long carId;
     private String serviceType;

@@ -1,6 +1,7 @@
 package uni.project.rest.api.model;
 
 import lombok.*;
+import uni.project.rest.api.entity.Garage;
 
 import java.util.List;
 
@@ -15,5 +16,4 @@ public class CreateCarDTO {
     private Integer productionYear;
     private String licensePlate;
     private List<Long> garageIds;
-
 }
