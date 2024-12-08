@@ -32,9 +32,15 @@ public class CarService {
     private GarageRepository garageRepository;
 
 
-   public List<Car> getCarsByFilters(String make, Long garageId, int fromYear, int toYear) {
-       return carRepository.findCarsByMakeAndGarageAndYearRange(make, garageId, fromYear, toYear);
-   }
+//   public List<Car> getCarsByFilters(String make, Long garageId, int fromYear, int toYear) {
+//       return carRepository.findCarsByMakeAndGarageAndYearRange(make, garageId, fromYear, toYear);
+//   }
+    public List<Car> getCarsByFilters(String make,
+                                      Long garageId,
+                                      Integer fromYear,
+                                      Integer toYear) {
+        return carRepository.findCarsByMakeAndGarageAndYearRange(make, garageId, fromYear, toYear);
+    }
 
    public List<Car> getAllCars(){
        return carRepository.findAll();

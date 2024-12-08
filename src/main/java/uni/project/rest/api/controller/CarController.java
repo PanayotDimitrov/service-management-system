@@ -11,6 +11,7 @@ import uni.project.rest.api.service.CarService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://Localhost:3000")
@@ -27,10 +28,16 @@ public class CarController {
                                 @RequestParam(required = false) Integer fromYear,
                                 @RequestParam(required = false) Integer toYear)
     {
-        if (carMake == null || carMake.isEmpty() || garageId == null || garageId <= 0 || fromYear <= 0 || toYear <= 0) {
+        boolean isAnyFilterProvided = (carMake != null && !carMake.isEmpty()) ||
+                (garageId != null) ||
+                (fromYear != null && fromYear > 0) ||
+                (toYear != null && toYear > 1);
+
+        if (isAnyFilterProvided) {
+            return carService.getCarsByFilters(carMake, garageId, fromYear, toYear);
+        } else {
             return carService.getAllCars();
         }
-        return carService.getCarsByFilters(carMake, garageId, fromYear, toYear);
     }
 
     @GetMapping("/cars/{id}")
