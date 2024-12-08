@@ -36,6 +36,10 @@ public class CarService {
        return carRepository.findCarsByMakeAndGarageAndYearRange(make, garageId, fromYear, toYear);
    }
 
+   public List<Car> getAllCars(){
+       return carRepository.findAll();
+   }
+
     public Car getCarById(Long id) {
         return entityManager.find(Car.class, id);
     }

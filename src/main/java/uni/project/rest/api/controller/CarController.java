@@ -24,9 +24,12 @@ public class CarController {
     @CrossOrigin("http://Localhost:3000/cars")
     public List<Car> getAllCars(@RequestParam(required = false) String carMake,
                                 @RequestParam(required = false) Long garageId,
-                                @RequestParam int fromYear,
-                                @RequestParam int toYear)
+                                @RequestParam(required = false) Integer fromYear,
+                                @RequestParam(required = false) Integer toYear)
     {
+        if (carMake == null || carMake.isEmpty() || garageId == null || garageId <= 0 || fromYear <= 0 || toYear <= 0) {
+            return carService.getAllCars();
+        }
         return carService.getCarsByFilters(carMake, garageId, fromYear, toYear);
     }
 

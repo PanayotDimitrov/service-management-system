@@ -42,7 +42,7 @@ public class MaintenanceService {
 
 
 
-
+@Transactional
     public Maintenance createMaintenance(CreateMaintenanceDTO dto) {
         // Validate if car exists
         if (!carRepository.existsById(dto.getCarId())) {
