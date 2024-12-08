@@ -6,11 +6,12 @@ import lombok.*;
 @Setter
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CreateGarageDTO {
 
     private String name;
     private String location;
     private String city;
-    private int capacity;
+    private Integer capacity;
 
 }

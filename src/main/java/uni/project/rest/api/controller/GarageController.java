@@ -24,8 +24,8 @@ public class GarageController {
 
     @PostMapping("/garages")
     @CrossOrigin("http://localhost:3000/garages")
-    public void createGarage(@RequestBody CreateGarageDTO createGarageDTO) {
-        garageService.addGarage(createGarageDTO);
+    public Garage createGarage(@RequestBody Garage garage) {
+        return garageService.createGarage(garage);
     }
 
 //    --------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ public class GarageController {
     @GetMapping("/garages")
     @CrossOrigin("http://localhost:3000/garages")
     public List<Garage> getGarageByCity(@RequestParam(required = false) String city) {
-        if (city == null) {
+        if (city == null || city.isEmpty()) {
             return garageService.getAllGarages();
         }else {
             return garageService.getAllGaragesByCity(city);
@@ -52,8 +52,11 @@ public class GarageController {
 
     @PutMapping("/garages/{id}")
     @CrossOrigin("http://localhost:3000/garages/{id}")
-    public ResponseEntity<ResponseGarageDTO> updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
-        return new ResponseEntity<>(garageService.updateGarage(id, updateGarageDTO), HttpStatus.OK);
+//    public ResponseEntity<ResponseGarageDTO> updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
+//        return new ResponseEntity<>(garageService.updateGarage(id, updateGarageDTO), HttpStatus.OK);
+//    }
+    public ResponseGarageDTO updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
+        return garageService.updateGarage(id, updateGarageDTO);
     }
 
     @DeleteMapping("/garages/{id}")

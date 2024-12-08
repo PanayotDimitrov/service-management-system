@@ -21,10 +21,10 @@ public class CarController {
 
     @GetMapping("/cars")
     @CrossOrigin("http://Localhost:3000/cars")
-    public List<Car> getAllCars(@RequestParam String carMake,
-                                           @RequestParam Long garageId,
-                                           @RequestParam int fromYear,
-                                           @RequestParam int toYear)
+    public List<Car> getAllCars(@RequestParam(required = false) String carMake,
+                                @RequestParam(required = false) Long garageId,
+                                @RequestParam int fromYear,
+                                @RequestParam int toYear)
     {
         return carService.getCarsByFilters(carMake, garageId, fromYear, toYear);
     }

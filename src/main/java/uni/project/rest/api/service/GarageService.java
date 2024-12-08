@@ -5,6 +5,7 @@ import jakarta.persistence.TypedQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uni.project.rest.api.entity.Garage;
 import uni.project.rest.api.model.CreateGarageDTO;
 import uni.project.rest.api.model.GarageDailyAvailabilityReportDTO;
@@ -26,17 +27,19 @@ public class GarageService {
     @Autowired
     private EntityManager entityManager;
 
+@Transactional
+    public Garage createGarage(Garage garage){
 
-    public Garage addGarage(CreateGarageDTO createGarageDTO){
+//        Garage garage = new Garage();
+//
+//        garage.setName(createGarageDTO.getName());
+//        garage.setLocation(createGarageDTO.getLocation());
+//        garage.setCity(createGarageDTO.getCity());
+//        garage.setCapacity(createGarageDTO.getCapacity());
 
-        Garage garage = new Garage();
-        garage.setName(createGarageDTO.getName());
-        garage.setLocation(createGarageDTO.getLocation());
-        garage.setCity(createGarageDTO.getCity());
-        garage.setCapacity(createGarageDTO.getCapacity());
-
-//        return garageRepository.save(createGarageDTO);
-        return garageRepository.save(garage);
+//        return garageRepository.save(garage);
+        entityManager.persist(garage);
+        return garage;
     }
 
     public ResponseGarageDTO getGarageById(Long garageId) {
@@ -51,6 +54,7 @@ public class GarageService {
         );
     }
 
+    @Transactional
     public ResponseGarageDTO updateGarage(Long garageId, UpdateGarageDTO updateGarageDTO) {
         Garage garage = garageRepository.findById(garageId)
                 .orElseThrow(() -> new RuntimeException("Garage not found"));
@@ -69,6 +73,7 @@ public class GarageService {
                 garage.getCapacity()
         );
     }
+    @Transactional
     public void deleteGarageById(Long garageId) {
         Garage garage = garageRepository.findById(garageId)
                 .orElseThrow(() -> new RuntimeException("Garage not found"));

@@ -13,6 +13,7 @@ import uni.project.rest.api.repository.CarRepository;
 import uni.project.rest.api.repository.GarageRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,12 +81,6 @@ public class CarService {
     public void deleteCarById(int id) {
         carRepository.delete(getCarById(id));
     }
-
-
-
-
-
-
 
 
 

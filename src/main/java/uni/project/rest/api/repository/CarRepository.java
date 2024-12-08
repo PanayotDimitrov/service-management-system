@@ -12,11 +12,16 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface CarRepository extends JpaRepository<Car, Long> {
 
+
     @Query("SELECT c FROM Car c " +
             "JOIN c.garages g " +
-            "WHERE c.make = :make " +
-            "AND g.id = :garageId " +
-            "AND c.productionYear BETWEEN :fromYear AND :toYear")
-    List<Car> findCarsByMakeAndGarageAndYearRange(String make, Long garageId, int fromYear, int toYear);
+            "WHERE (:make IS NULL OR c.make = :make) " +
+            "AND (:garageId IS NULL OR g.id = :garageId) " +
+            "AND (:fromYear IS NULL OR :toYear IS NULL OR c.productionYear BETWEEN :fromYear AND :toYear)")
+    List<Car> findCarsByMakeAndGarageAndYearRange(
+            @Param("make") String make,
+            @Param("garageId") Long garageId,
+            @Param("fromYear") Integer fromYear,
+            @Param("toYear") Integer toYear);
 
 }
