@@ -62,9 +62,6 @@ public class GarageController {
 
     @PutMapping("/garages/{id}")
     @CrossOrigin("http://localhost:3000/garages/{id}")
-//    public ResponseGarageDTO updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
-//        return garageService.updateGarage(id, updateGarageDTO);
-//    }
     public ResponseGarageDTO updateGarage(
             @PathVariable Long id,
             @RequestBody UpdateGarageDTO updateGarageDTO) {
@@ -81,12 +78,10 @@ public class GarageController {
     }
 
 
-
     @DeleteMapping("/garages/{id}")
     @CrossOrigin("http://localhost:3000/garages/{id}")
-    public ResponseEntity<Void> deleteGarage(@PathVariable Long id) {
+    public void deleteGarage(@PathVariable Long id) {
         garageService.deleteGarageById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

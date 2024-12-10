@@ -75,10 +75,11 @@ public class GarageService {
     }
     @Transactional
     public void deleteGarageById(Long garageId) {
-        Garage garage = garageRepository.findById(garageId)
-                .orElseThrow(() -> new RuntimeException("Garage not found"));
+        garageRepository.delete(getGarageByIdForDelete(garageId));
+}
 
-        garageRepository.delete(garage);
+    public Garage getGarageByIdForDelete(Long garageId) {
+    return entityManager.find(Garage.class, garageId);
     }
 
 
