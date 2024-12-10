@@ -29,30 +29,32 @@ public class MaintenanceController {
     private GarageRepository garageRepository;
 
     @PostMapping
-    public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
-        Maintenance createdMaintenance = maintenanceService.createMaintenance(dto);
-
-        // Map to Response DTO
-        ResponseMaintenanceDTO response = new ResponseMaintenanceDTO();
-        response.setId(createdMaintenance.getId());
-        response.setCarId(createdMaintenance.getCarId());
-        response.setGarageId(createdMaintenance.getGarageId());
-        response.setServiceType(createdMaintenance.getServiceType());
-        response.setScheduledDate(createdMaintenance.getScheduledDate());
-
-        String carName = garageRepository.findById(createdMaintenance.getCarId())
-                        .map(Garage::getName)
-                                .orElse("Unknown car");
-
-        String garageName = garageRepository.findById(createdMaintenance.getGarageId())
-                        .map(Garage::getName)
-                .orElse("Unknown garage");
-
-        response.setCarName(carName);
-        response.setGarageName(garageName);
+    public void createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
 
         maintenanceService.createMaintenance(dto);
-        return null;
+//        Maintenance createdMaintenance = maintenanceService.createMaintenance(dto);
+
+//        // Map to Response DTO
+//        ResponseMaintenanceDTO response = new ResponseMaintenanceDTO();
+//        response.setId(createdMaintenance.getId());
+//        response.setCarId(createdMaintenance.getCarId());
+//        response.setGarageId(createdMaintenance.getGarageId());
+//        response.setServiceType(createdMaintenance.getServiceType());
+//        response.setScheduledDate(createdMaintenance.getScheduledDate());
+//
+//        String carName = garageRepository.findById(createdMaintenance.getCarId())
+//                        .map(Garage::getName)
+//                                .orElse("Unknown car");
+//
+//        String garageName = garageRepository.findById(createdMaintenance.getGarageId())
+//                        .map(Garage::getName)
+//                .orElse("Unknown garage");
+//
+//        response.setCarName(carName);
+//        response.setGarageName(garageName);
+//
+//        maintenanceService.createMaintenance(dto);
+//        return null;
     }
 
     @GetMapping("/{id}")
@@ -74,7 +76,7 @@ public class MaintenanceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/maintenance/monthlyRequestsReport")
+    @GetMapping("/monthlyRequestsReport")
     public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
             @RequestParam(required = false) Long garageId,
             @RequestParam String startMonth,

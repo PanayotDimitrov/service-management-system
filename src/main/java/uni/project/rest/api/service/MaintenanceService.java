@@ -43,7 +43,7 @@ public class MaintenanceService {
 
 
 @Transactional
-    public Maintenance createMaintenance(CreateMaintenanceDTO dto) {
+    public void createMaintenance(CreateMaintenanceDTO dto) {
         // Validate if car exists
         if (!carRepository.existsById(dto.getCarId())) {
             throw new EntityNotFoundException("Car not found with ID: " + dto.getCarId());
@@ -62,7 +62,7 @@ public class MaintenanceService {
         maintenance.setScheduledDate(dto.getScheduledDate());
 
         // Save entity
-        return maintenanceRepository.save(maintenance);
+        maintenanceRepository.save(maintenance);
     }
 
 
