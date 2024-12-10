@@ -32,29 +32,6 @@ public class MaintenanceController {
     public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
 
         return maintenanceService.createMaintenance(dto);
-//        Maintenance createdMaintenance = maintenanceService.createMaintenance(dto);
-
-//        // Map to Response DTO
-//        ResponseMaintenanceDTO response = new ResponseMaintenanceDTO();
-//        response.setId(createdMaintenance.getId());
-//        response.setCarId(createdMaintenance.getCarId());
-//        response.setGarageId(createdMaintenance.getGarageId());
-//        response.setServiceType(createdMaintenance.getServiceType());
-//        response.setScheduledDate(createdMaintenance.getScheduledDate());
-//
-//        String carName = garageRepository.findById(createdMaintenance.getCarId())
-//                        .map(Garage::getName)
-//                                .orElse("Unknown car");
-//
-//        String garageName = garageRepository.findById(createdMaintenance.getGarageId())
-//                        .map(Garage::getName)
-//                .orElse("Unknown garage");
-//
-//        response.setCarName(carName);
-//        response.setGarageName(garageName);
-//
-//        maintenanceService.createMaintenance(dto);
-//        return null;
     }
 
     @GetMapping("/{id}")
@@ -63,10 +40,10 @@ public class MaintenanceController {
     }
 
     @PutMapping("/{id}")
-    public void updateMaintenanceById(
+    public ResponseMaintenanceDTO updateMaintenanceById(
             @PathVariable Long id,
             @RequestBody UpdateMaintenanceDTO updateMaintenanceDTO) {
-        maintenanceService.updateMaintenanceById(id, updateMaintenanceDTO);
+        return maintenanceService.updateMaintenanceById(id, updateMaintenanceDTO);
     }
 
     @DeleteMapping("/{id}")

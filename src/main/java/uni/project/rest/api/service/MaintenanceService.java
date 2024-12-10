@@ -72,16 +72,18 @@ public class MaintenanceService {
     }
 
     @Transactional
-    public void updateMaintenanceById(Long id, UpdateMaintenanceDTO updateMaintenanceDTO) {
+    public ResponseMaintenanceDTO updateMaintenanceById(Long id, UpdateMaintenanceDTO updateMaintenanceDTO) {
         Maintenance maintenance = maintenanceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Maintenance not found with id: " + id));
+
         maintenance.setCarId(updateMaintenanceDTO.getCarId());
         maintenance.setServiceType(updateMaintenanceDTO.getServiceType());
         maintenance.setScheduledDate(updateMaintenanceDTO.getScheduledDate());
         maintenance.setGarageId(updateMaintenanceDTO.getGarageId());
-        maintenanceRepository.save(maintenance);
+        return mapMaintanceToResponseDTO(maintenance);
     }
 
+    @Transactional
     public void deleteMaintenanceById(Long id) {
         if (!maintenanceRepository.existsById(id)) {
             throw new RuntimeException("Maintenance not found with id: " + id);
@@ -120,4 +122,5 @@ public class MaintenanceService {
 
         return dto;
     }
+
 }
