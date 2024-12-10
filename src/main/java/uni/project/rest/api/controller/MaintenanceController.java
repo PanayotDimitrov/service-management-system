@@ -29,9 +29,9 @@ public class MaintenanceController {
     private GarageRepository garageRepository;
 
     @PostMapping
-    public void createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
+    public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
 
-        maintenanceService.createMaintenance(dto);
+        return maintenanceService.createMaintenance(dto);
 //        Maintenance createdMaintenance = maintenanceService.createMaintenance(dto);
 
 //        // Map to Response DTO
@@ -58,22 +58,20 @@ public class MaintenanceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseMaintenanceDTO> getMaintenanceById(@PathVariable Long id) {
-        return ResponseEntity.ok(maintenanceService.getMaintenanceById(id));
+    public ResponseMaintenanceDTO getMaintenanceById(@PathVariable Long id) {
+        return maintenanceService.getMaintenanceById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMaintenanceById(
+    public void updateMaintenanceById(
             @PathVariable Long id,
             @RequestBody UpdateMaintenanceDTO updateMaintenanceDTO) {
         maintenanceService.updateMaintenanceById(id, updateMaintenanceDTO);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMaintenanceById(@PathVariable Long id) {
+    public void deleteMaintenanceById(@PathVariable Long id) {
         maintenanceService.deleteMaintenanceById(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/monthlyRequestsReport")

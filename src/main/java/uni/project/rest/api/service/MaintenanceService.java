@@ -43,33 +43,32 @@ public class MaintenanceService {
 
 
 @Transactional
-    public void createMaintenance(CreateMaintenanceDTO dto) {
+    public ResponseMaintenanceDTO createMaintenance(CreateMaintenanceDTO createMaintenanceDTO) {
         // Validate if car exists
-        if (!carRepository.existsById(dto.getCarId())) {
-            throw new EntityNotFoundException("Car not found with ID: " + dto.getCarId());
+        if (!carRepository.existsById(createMaintenanceDTO.getCarId())) {
+            throw new EntityNotFoundException("Car not found with ID: " + createMaintenanceDTO.getCarId());
         }
 
         // Validate if garage exists
-        if (!garageRepository.existsById(dto.getGarageId())) {
-            throw new EntityNotFoundException("Garage not found with ID: " + dto.getGarageId());
+        if (!garageRepository.existsById(createMaintenanceDTO.getGarageId())) {
+            throw new EntityNotFoundException("Garage not found with ID: " + createMaintenanceDTO.getGarageId());
         }
 
-        // Map DTO to Entity
         Maintenance maintenance = new Maintenance();
-        maintenance.setCarId(dto.getCarId());
-        maintenance.setGarageId(dto.getGarageId());
-        maintenance.setServiceType(dto.getServiceType());
-        maintenance.setScheduledDate(dto.getScheduledDate());
-
-        // Save entity
+        maintenance.setCarId(createMaintenanceDTO.getCarId());
+        maintenance.setGarageId(createMaintenanceDTO.getGarageId());
+        maintenance.setServiceType(createMaintenanceDTO.getServiceType());
+        maintenance.setScheduledDate(createMaintenanceDTO.getScheduledDate());
         maintenanceRepository.save(maintenance);
+
+       return mapMaintanceToResponseDTO(maintenance);
     }
 
 
     public ResponseMaintenanceDTO getMaintenanceById(Long id) {
         Maintenance maintenance = maintenanceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Maintenance not found with id: " + id));
-        return mapToResponseDTO(maintenance);
+        return mapMaintanceToResponseDTO(maintenance);
     }
 
     @Transactional
@@ -97,11 +96,11 @@ public class MaintenanceService {
     public List<ResponseMaintenanceDTO> getAllMaintenance(Long carId, Long garageId, LocalDate startDate, LocalDate endDate) {
         List<Maintenance> maintenances = maintenanceRepository.findAllByFilters(carId, garageId, startDate, endDate);
         return maintenances.stream()
-                .map(this::mapToResponseDTO)
+                .map(this::mapMaintanceToResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    private ResponseMaintenanceDTO mapToResponseDTO(Maintenance maintenance) {
+    private ResponseMaintenanceDTO mapMaintanceToResponseDTO(Maintenance maintenance) {
         ResponseMaintenanceDTO dto = new ResponseMaintenanceDTO();
         dto.setId(maintenance.getId());
         dto.setCarId(maintenance.getCarId());
