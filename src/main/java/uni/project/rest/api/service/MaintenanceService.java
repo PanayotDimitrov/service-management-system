@@ -14,6 +14,7 @@ import uni.project.rest.api.repository.GarageRepository;
 import uni.project.rest.api.repository.MaintenanceRepository;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +35,6 @@ public class MaintenanceService {
         this.carRepository = carRepository;
         this.garageRepository = garageRepository;
     }
-
-
-    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(Long garageId, LocalDate startMonth, LocalDate endMonth) {
-        return maintenanceRepository.findMonthlyRequestsReport(garageId, startMonth, endMonth);
-    }
-
 
 
 @Transactional
@@ -91,10 +86,6 @@ public class MaintenanceService {
         maintenanceRepository.deleteById(id);
     }
 
-    public List<MonthlyRequestsReportDTO> monthlyRequestReport(Long garageId, LocalDate startMonth, LocalDate endMonth) {
-        return maintenanceRepository.findMonthlyRequestsReport(garageId, startMonth, endMonth);
-    }
-
     public List<ResponseMaintenanceDTO> getAllMaintenance(Long carId, Long garageId, LocalDate startDate, LocalDate endDate) {
         List<Maintenance> maintenances = maintenanceRepository.findAllByFilters(carId, garageId, startDate, endDate);
         return maintenances.stream()
@@ -121,6 +112,28 @@ public class MaintenanceService {
         dto.setGarageName(garageName);
 
         return dto;
+    }
+
+
+    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(Long garageId, LocalDate startMonth, LocalDate endMonth) {
+
+        List<Object[]> rawResults = maintenanceRepository.findMonthlyRequestsReportRaw(garageId, startMonth, endMonth);
+
+        return rawResults.stream().map(result ->{
+            int year = ((Number) result[0]).intValue();
+            int monthValue = ((Number) result[1]).intValue();
+            long requests = ((Number) result[2]).longValue();
+
+            MonthlyRequestsReportDTO.YearMonthDetail yearMonthDetail = new MonthlyRequestsReportDTO.YearMonthDetail();
+            yearMonthDetail.setYear(year);
+            yearMonthDetail.setMonth(Month.of(monthValue).name());
+            yearMonthDetail.setMonthValue(monthValue);
+            yearMonthDetail.setLeapYear(java.time.Year.of(year).isLeap());
+
+            return new MonthlyRequestsReportDTO(yearMonthDetail,(int) requests);
+        }).collect(Collectors.toList());
+
+
     }
 
 }

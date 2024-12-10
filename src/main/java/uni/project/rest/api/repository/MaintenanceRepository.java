@@ -23,14 +23,14 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
-    @Query("SELECT MonthlyRequestsReportDTO( " +
-            "CONCAT(EXTRACT(YEAR FROM m.scheduledDate), '-', EXTRACT(MONTH FROM m.scheduledDate)), COUNT(m)) " +
+    @Query("SELECT EXTRACT(YEAR FROM m.scheduledDate) AS year, " +
+            "EXTRACT(MONTH FROM m.scheduledDate) AS month, " +
+            "COUNT(m) AS requests " +
             "FROM Maintenance m " +
             "WHERE (:garageId IS NULL OR m.garageId = :garageId) " +
             "AND m.scheduledDate BETWEEN :startMonth AND :endMonth " +
             "GROUP BY EXTRACT(YEAR FROM m.scheduledDate), EXTRACT(MONTH FROM m.scheduledDate)")
-    List<MonthlyRequestsReportDTO> findMonthlyRequestsReport(
-            @Param("garageId") Long garageId,
-            @Param("startMonth") LocalDate startMonth,
-            @Param("endMonth") LocalDate endMonth);
+    List<Object[]> findMonthlyRequestsReportRaw(@Param("garageId") Long garageId,
+                                                @Param("startMonth") LocalDate startMonth,
+                                                @Param("endMonth") LocalDate endMonth);
 }

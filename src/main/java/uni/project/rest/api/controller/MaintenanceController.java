@@ -53,7 +53,7 @@ public class MaintenanceController {
 
     @GetMapping("/monthlyRequestsReport")
     public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
-            @RequestParam(required = false) Long garageId,
+            @RequestParam Long garageId,
             @RequestParam String startMonth,
             @RequestParam String endMonth) {
         LocalDate startDate = LocalDate.parse(startMonth + "-01");
