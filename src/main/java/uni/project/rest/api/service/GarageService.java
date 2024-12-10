@@ -28,10 +28,16 @@ public class GarageService {
     private EntityManager entityManager;
 
 @Transactional
-    public Garage createGarage(Garage garage){
+    public Garage createGarage(CreateGarageDTO createGarageDTO){
 
+        Garage garage = new Garage();
+        garage.setName(createGarageDTO.getName());
+        garage.setLocation(createGarageDTO.getLocation());
+        garage.setCity(createGarageDTO.getCity());
+        garage.setCapacity(createGarageDTO.getCapacity());
         entityManager.persist(garage);
         return garage;
+
     }
 
     public ResponseGarageDTO getGarageById(Long garageId) {
@@ -41,6 +47,7 @@ public class GarageService {
         return new ResponseGarageDTO(
                 garage.getId(),
                 garage.getName(),
+                garage.getLocation(),
                 garage.getCity(),
                 garage.getCapacity()
         );
@@ -61,6 +68,7 @@ public class GarageService {
         return new ResponseGarageDTO(
                 garage.getId(),
                 garage.getName(),
+                garage.getLocation(),
                 garage.getCity(),
                 garage.getCapacity()
         );
@@ -111,6 +119,7 @@ public class GarageService {
         return new ResponseGarageDTO(
                 garage.getId(),
                 garage.getName(),
+                garage.getLocation(),
                 garage.getCity(),
                 garage.getCapacity()
         );

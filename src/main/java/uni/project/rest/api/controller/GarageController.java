@@ -24,8 +24,8 @@ public class GarageController {
 
     @PostMapping("/garages")
     @CrossOrigin("http://localhost:3000/garages")
-    public Garage createGarage(@RequestBody Garage garage) {
-        return garageService.createGarage(garage);
+    public Garage createGarage(@RequestBody CreateGarageDTO createGarageDTO) {
+        return garageService.createGarage(createGarageDTO);
     }
 
 //    --------------------------------------------------------------------------------------------------------------------------------
@@ -49,24 +49,6 @@ public class GarageController {
         return garageService.getGarageById(id);
     }
 
-
-    @PutMapping("/garages/{id}")
-    @CrossOrigin("http://localhost:3000/garages/{id}")
-//    public ResponseEntity<ResponseGarageDTO> updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
-//        return new ResponseEntity<>(garageService.updateGarage(id, updateGarageDTO), HttpStatus.OK);
-//    }
-    public ResponseGarageDTO updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
-        return garageService.updateGarage(id, updateGarageDTO);
-    }
-
-    @DeleteMapping("/garages/{id}")
-    @CrossOrigin("http://localhost:3000/garages/{id}")
-    public ResponseEntity<Void> deleteGarage(@PathVariable Long id) {
-        garageService.deleteGarageById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
     // Get Garage Daily Availability Report
     @GetMapping("/garages/dailyAvailabilityReport")
     @CrossOrigin("http://localhost:8088/garages/dailyAvailabilityReport")
@@ -76,4 +58,35 @@ public class GarageController {
             @RequestParam LocalDate endDate) {
         return new ResponseEntity<>(garageService.getGarageDailyAvailabilityReport(garageId, startDate, endDate), HttpStatus.OK);
     }
+
+
+    @PutMapping("/garages/{id}")
+    @CrossOrigin("http://localhost:3000/garages/{id}")
+//    public ResponseGarageDTO updateGarage(@PathVariable Long id, @RequestBody UpdateGarageDTO updateGarageDTO) {
+//        return garageService.updateGarage(id, updateGarageDTO);
+//    }
+    public ResponseGarageDTO updateGarage(
+            @PathVariable Long id,
+            @RequestBody UpdateGarageDTO updateGarageDTO) {
+
+        if(updateGarageDTO.getName() == null || updateGarageDTO.getName().isEmpty() ||
+                updateGarageDTO.getLocation() == null || updateGarageDTO.getLocation().isEmpty() ||
+                updateGarageDTO.getCity() == null || updateGarageDTO.getCity().isEmpty() ||
+                updateGarageDTO.getCapacity() <=0)  {
+            return null;
+        }
+
+        return garageService.updateGarage(id, updateGarageDTO);
+
+    }
+
+
+
+    @DeleteMapping("/garages/{id}")
+    @CrossOrigin("http://localhost:3000/garages/{id}")
+    public ResponseEntity<Void> deleteGarage(@PathVariable Long id) {
+        garageService.deleteGarageById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
