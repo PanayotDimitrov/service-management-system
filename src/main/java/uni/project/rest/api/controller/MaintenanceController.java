@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/maintenance")
-@RequiredArgsConstructor
+@CrossOrigin("http://Localhost:3000")
 public class MaintenanceController {
 
     @Autowired
@@ -29,17 +29,20 @@ public class MaintenanceController {
     private GarageRepository garageRepository;
 
     @PostMapping
+    @CrossOrigin("http://Localhost:3000/maintenance")
     public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
 
         return maintenanceService.createMaintenance(dto);
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public ResponseMaintenanceDTO getMaintenanceById(@PathVariable Long id) {
         return maintenanceService.getMaintenanceById(id);
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public ResponseMaintenanceDTO updateMaintenanceById(
             @PathVariable Long id,
             @RequestBody UpdateMaintenanceDTO updateMaintenanceDTO) {
@@ -47,11 +50,13 @@ public class MaintenanceController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public void deleteMaintenanceById(@PathVariable Long id) {
         maintenanceService.deleteMaintenanceById(id);
     }
 
     @GetMapping("/monthlyRequestsReport")
+    @CrossOrigin("http://Localhost:3000/maintenance/monthlyRequestsReport")
     public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
             @RequestParam Long garageId,
             @RequestParam String startMonth,

@@ -65,10 +65,8 @@ public class CarService {
         car.setProductionYear(updateCarDTO.getProductionYear());
         car.setLicensePlate(updateCarDTO.getLicensePlate());
 
-        if (updateCarDTO.getGarageIds() != null && !updateCarDTO.getGarageIds().isEmpty()) {
-            List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarageIds());
-            car.setGarages(garages);
-        }
+        List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarageIds());
+        car.setGarages(garages);
 
         entityManager.persist(car);
 

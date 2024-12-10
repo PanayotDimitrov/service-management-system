@@ -51,7 +51,7 @@ public class GarageController {
 
     // Get Garage Daily Availability Report
     @GetMapping("/garages/dailyAvailabilityReport")
-    @CrossOrigin("http://localhost:8088/garages/dailyAvailabilityReport")
+    @CrossOrigin("http://localhost:3000/garages/dailyAvailabilityReport")
     public ResponseEntity<List<GarageDailyAvailabilityReportDTO>> getGarageDailyAvailabilityReport(
             @RequestParam Long garageId,
             @RequestParam LocalDate startDate,
