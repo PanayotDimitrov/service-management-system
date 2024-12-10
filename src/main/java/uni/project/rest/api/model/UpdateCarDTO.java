@@ -1,6 +1,7 @@
 package uni.project.rest.api.model;
 
 import lombok.*;
+import uni.project.rest.api.entity.Garage;
 
 import java.util.List;
 @Getter
@@ -9,11 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 public class UpdateCarDTO {
 
-    private Long id;
     private String make;
     private String model;
     private int productionYear;
     private String licensePlate;
-    private List<Long> garages;
+    private List<Long> garageIds;
 
 }

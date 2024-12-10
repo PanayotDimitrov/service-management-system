@@ -7,6 +7,7 @@ import java.util.List;
 @Getter
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 public class ResponseCarDTO {
 
@@ -15,6 +16,6 @@ public class ResponseCarDTO {
     private String model;
     private int productionYear;
     private String licensePlate;
-    private List<Long> garageIds;
+    private List<ResponseGarageDTO> garageIds;
 
 }

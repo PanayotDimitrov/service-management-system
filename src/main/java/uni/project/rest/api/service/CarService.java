@@ -8,6 +8,7 @@ import uni.project.rest.api.entity.Car;
 import uni.project.rest.api.entity.Garage;
 import uni.project.rest.api.model.CreateCarDTO;
 import uni.project.rest.api.model.ResponseCarDTO;
+import uni.project.rest.api.model.ResponseGarageDTO;
 import uni.project.rest.api.model.UpdateCarDTO;
 import uni.project.rest.api.repository.CarRepository;
 import uni.project.rest.api.repository.GarageRepository;
@@ -32,9 +33,6 @@ public class CarService {
     private GarageRepository garageRepository;
 
 
-//   public List<Car> getCarsByFilters(String make, Long garageId, int fromYear, int toYear) {
-//       return carRepository.findCarsByMakeAndGarageAndYearRange(make, garageId, fromYear, toYear);
-//   }
     public List<Car> getCarsByFilters(String make,
                                       Long garageId,
                                       Integer fromYear,
@@ -50,45 +48,33 @@ public class CarService {
         return entityManager.find(Car.class, id);
     }
 
-//    public Map<Long, ResponseCarDTO> getCarById(Long id){
-//       Car car = carRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Car not found"));
-//
-//       ResponseCarDTO responseCarDTO = new ResponseCarDTO();
-//
-//       Map<Long, ResponseCarDTO> result = new HashMap<>();
-//       result.put(car.getId(), responseCarDTO);
-//       return result;
-//    }
-
     public void deleteCarById(Long id) {
         carRepository.delete(getCarById(id));
     }
 
+    public ResponseCarDTO updateCar(Long id,UpdateCarDTO updateCarDTO) {
 
-    public ResponseCarDTO updateCar(Long id, UpdateCarDTO updateCarDTO) {
-        Car dbCar = carRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Car not found"));
+        Car car = entityManager.find(Car.class, id);
 
-        if (updateCarDTO.getMake() != null) {
-            dbCar.setMake(updateCarDTO.getMake());
-        }
-        if (updateCarDTO.getModel() != null) {
-            dbCar.setModel(updateCarDTO.getModel());
-        }
-        if (updateCarDTO.getProductionYear()!= 0) {
-            dbCar.setProductionYear(updateCarDTO.getProductionYear());
-        }
-        if (updateCarDTO.getLicensePlate() != null) {
-            dbCar.setLicensePlate(updateCarDTO.getLicensePlate());
+        if (car != null) {
+            throw new RuntimeException("Car with ID "+ id + " not found");
         }
 
-        if(updateCarDTO.getGarages() != null && !updateCarDTO.getGarages().isEmpty()) {
-            List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarages());
-            dbCar.setGarages(garages);
+        car.setMake(updateCarDTO.getMake());
+        car.setModel(updateCarDTO.getModel());
+        car.setProductionYear(updateCarDTO.getProductionYear());
+        car.setLicensePlate(updateCarDTO.getLicensePlate());
+
+        if (updateCarDTO.getGarageIds() != null && !updateCarDTO.getGarageIds().isEmpty()) {
+            List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarageIds());
+            car.setGarages(garages);
         }
 
-        Car updatedCar = carRepository.save(dbCar);
-        return mapToResponseDTO(updatedCar);
+        entityManager.persist(car);
+
+        return mapToResponseDTO(car);
     }
+
 
     public ResponseCarDTO addCar(CreateCarDTO createCarDTO) {
         Car car = new Car();
@@ -100,30 +86,12 @@ public class CarService {
         List<Garage> garages = garageRepository.findAllById(createCarDTO.getGarageIds());
         car.setGarages(garages);
 
-        Car savedCar = carRepository.save(car);
+        carRepository.save(car);
 
-        return mapToResponseDTO(savedCar);
+        return mapToResponseDTO(car);
     }
 
 
-
-    private Car mapCarResponseDtoToCar(ResponseCarDTO responseCarDTO) {
-        Car car = new Car();
-
-        car.setId(responseCarDTO.getId());
-        car.setMake(responseCarDTO.getMake());
-        car.setModel(responseCarDTO.getModel());
-        car.setProductionYear(responseCarDTO.getProductionYear());
-        car.setLicensePlate(responseCarDTO.getLicensePlate());
-
-
-        if (responseCarDTO.getGarageIds() != null && !responseCarDTO.getGarageIds().isEmpty()) {
-            List<Garage> garages = garageRepository.findAllById(responseCarDTO.getGarageIds());
-            car.setGarages(garages);
-        }
-
-        return car;
-    }
 
 
     private ResponseCarDTO mapToResponseDTO(Car car) {
@@ -136,10 +104,17 @@ public class CarService {
         responseCarDTO.setProductionYear(car.getProductionYear());
         responseCarDTO.setLicensePlate(car.getLicensePlate());
 
-        List<Long> garageIds = car.getGarages()
-                .stream().map(Garage::getId).collect(Collectors.toList());
+        List<ResponseGarageDTO> garages =car.getGarages()
+                .stream()
+                .map(garage -> new ResponseGarageDTO(
+                        garage.getId(),
+                        garage.getName(),
+                        garage.getLocation(),
+                        garage.getCity(),
+                        garage.getCapacity()
+                )).toList();
+        responseCarDTO.setGarageIds(garages);
 
-        responseCarDTO.setGarageIds(garageIds);
         return responseCarDTO;
     }
 
