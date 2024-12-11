@@ -24,7 +24,7 @@ public class CarController {
 
 
     @GetMapping("/cars")
-    @CrossOrigin("http://Localhost:3000/cars")
+    @CrossOrigin("http://localhost:3000/cars")
     public List<Car> getAllCars(@RequestParam(required = false) String carMake,
                                 @RequestParam(required = false) Long garageId,
                                 @RequestParam(required = false) Integer fromYear,
@@ -43,7 +43,7 @@ public class CarController {
     }
 
     @GetMapping("/cars/{id}")
-    @CrossOrigin("http://Localhost:3000/cars/{id}")
+    @CrossOrigin("http://localhost:3000/cars/{id}")
     public Car getCarById(@PathVariable Long id) {
         return carService.getCarById(id);
     }

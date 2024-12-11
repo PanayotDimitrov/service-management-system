@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/maintenance")
 @CrossOrigin("http://Localhost:3000")
 public class MaintenanceController {
 
@@ -30,20 +29,20 @@ public class MaintenanceController {
     @Autowired
     private GarageRepository garageRepository;
 
-    @PostMapping
+    @PostMapping("/maintenance")
     @CrossOrigin("http://Localhost:3000/maintenance")
     public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
 
         return maintenanceService.createMaintenance(dto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("maintenance/{id}")
     @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public ResponseMaintenanceDTO getMaintenanceById(@PathVariable Long id) {
         return maintenanceService.getMaintenanceById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("maintenance/{id}")
     @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public ResponseMaintenanceDTO updateMaintenanceById(
             @PathVariable Long id,
@@ -51,13 +50,13 @@ public class MaintenanceController {
         return maintenanceService.updateMaintenanceById(id, updateMaintenanceDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("maintenance/{id}")
     @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public void deleteMaintenanceById(@PathVariable Long id) {
         maintenanceService.deleteMaintenanceById(id);
     }
 
-    @GetMapping("/monthlyRequestsReport")
+    @GetMapping("maintenance/monthlyRequestsReport")
     @CrossOrigin("http://Localhost:3000/maintenance/monthlyRequestsReport")
     public List<Map<String,Object>> getMonthlyRequestsReport(
             @RequestParam(required = false) Long garageId,
@@ -71,8 +70,16 @@ public class MaintenanceController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<ResponseMaintenanceDTO>> getAllMaintenance(
+    @GetMapping("/maintenance")
+    @CrossOrigin("http://localhost:3000/maintenance")
+//    public ResponseEntity<List<ResponseMaintenanceDTO>> getAllMaintenance(
+//            @RequestParam(required = false) Long carId,
+//            @RequestParam(required = false) Long garageId,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+//        return ResponseEntity.ok(maintenanceService.getAllMaintenance(carId, garageId, startDate, endDate));
+//    }
+    public ResponseEntity<List<Maintenance>> getAllMaintenance(
             @RequestParam(required = false) Long carId,
             @RequestParam(required = false) Long garageId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

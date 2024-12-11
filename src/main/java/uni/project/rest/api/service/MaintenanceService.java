@@ -88,11 +88,12 @@ public class MaintenanceService {
         maintenanceRepository.deleteById(id);
     }
 
-    public List<ResponseMaintenanceDTO> getAllMaintenance(Long carId, Long garageId, LocalDate startDate, LocalDate endDate) {
+    public List<Maintenance> getAllMaintenance(Long carId, Long garageId, LocalDate startDate, LocalDate endDate) {
         List<Maintenance> maintenances = maintenanceRepository.findAllByFilters(carId, garageId, startDate, endDate);
-        return maintenances.stream()
-                .map(this::mapMaintanceToResponseDTO)
-                .collect(Collectors.toList());
+//        return maintenances.stream()
+//                .map(this::mapMaintanceToResponseDTO)
+//                .collect(Collectors.toList());
+        return maintenances;
     }
 
     private ResponseMaintenanceDTO mapMaintanceToResponseDTO(Maintenance maintenance) {
