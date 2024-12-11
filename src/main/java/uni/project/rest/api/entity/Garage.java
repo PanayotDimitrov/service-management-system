@@ -22,10 +22,11 @@ public class Garage {
     @Column(nullable = false,name = "location")
     private String location;
 
+    @Column(nullable = false,name = "city")
+    private String city;
+
     @Column(nullable = false,name = "capacity")
     private Integer capacity;
 
-    @Column(nullable = false,name = "city")
-    private String city;
 
 }
