@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uni.project.rest.api.entity.Car;
 import uni.project.rest.api.entity.Garage;
 import uni.project.rest.api.model.CreateCarDTO;
@@ -48,17 +49,19 @@ public class CarService {
         return entityManager.find(Car.class, id);
     }
 
+    @Transactional
     public void deleteCarById(Long id) {
         carRepository.delete(getCarById(id));
     }
 
+    @Transactional
     public ResponseCarDTO updateCar(Long id,UpdateCarDTO updateCarDTO) {
 
         Car car = entityManager.find(Car.class, id);
 
-        if (car != null) {
-            throw new RuntimeException("Car with ID "+ id + " not found");
-        }
+//        if (car != null) {
+//            throw new RuntimeException("Car with ID "+ id + " not found");
+//        }
 
         car.setMake(updateCarDTO.getMake());
         car.setModel(updateCarDTO.getModel());
@@ -68,12 +71,12 @@ public class CarService {
         List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarageIds());
         car.setGarages(garages);
 
-        entityManager.persist(car);
+        entityManager.merge(car);
 
         return mapToResponseDTO(car);
     }
 
-
+    @Transactional
     public ResponseCarDTO addCar(CreateCarDTO createCarDTO) {
         Car car = new Car();
         car.setMake(createCarDTO.getMake());
