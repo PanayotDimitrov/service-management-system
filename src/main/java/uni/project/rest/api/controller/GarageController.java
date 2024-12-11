@@ -49,7 +49,6 @@ public class GarageController {
         return garageService.getGarageById(id);
     }
 
-    // Get Garage Daily Availability Report
     @GetMapping("/garages/dailyAvailabilityReport")
     @CrossOrigin("http://localhost:3000/garages/dailyAvailabilityReport")
     public ResponseEntity<List<GarageDailyAvailabilityReportDTO>> getGarageDailyAvailabilityReport(

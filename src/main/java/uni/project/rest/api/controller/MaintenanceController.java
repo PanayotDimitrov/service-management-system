@@ -72,18 +72,11 @@ public class MaintenanceController {
 
     @GetMapping("/maintenance")
     @CrossOrigin("http://localhost:3000/maintenance")
-//    public ResponseEntity<List<ResponseMaintenanceDTO>> getAllMaintenance(
-//            @RequestParam(required = false) Long carId,
-//            @RequestParam(required = false) Long garageId,
-//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-//        return ResponseEntity.ok(maintenanceService.getAllMaintenance(carId, garageId, startDate, endDate));
-//    }
-    public ResponseEntity<List<Maintenance>> getAllMaintenance(
+    public List<Maintenance> getAllMaintenance(
             @RequestParam(required = false) Long carId,
             @RequestParam(required = false) Long garageId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ResponseEntity.ok(maintenanceService.getAllMaintenance(carId, garageId, startDate, endDate));
+        return maintenanceService.getAllMaintenance(carId, garageId, startDate, endDate);
     }
 }
