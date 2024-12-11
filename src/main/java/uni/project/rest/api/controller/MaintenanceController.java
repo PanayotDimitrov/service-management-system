@@ -59,16 +59,6 @@ public class MaintenanceController {
 
     @GetMapping("/monthlyRequestsReport")
     @CrossOrigin("http://Localhost:3000/maintenance/monthlyRequestsReport")
-//    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
-//            @RequestParam Long garageId,
-//            @RequestParam String startMonth,
-//            @RequestParam String endMonth) {
-//        LocalDate startDate = LocalDate.parse(startMonth + "-01");
-//        LocalDate endDate = LocalDate.parse(endMonth + "-01").withDayOfMonth(
-//                YearMonth.from(LocalDate.parse(endMonth + "-01")).lengthOfMonth()
-//        );
-//        return maintenanceService.getMonthlyRequestsReport(garageId, startDate, endDate);
-//    }
     public List<Map<String,Object>> getMonthlyRequestsReport(
             @RequestParam(required = false) Long garageId,
             @RequestParam String startMonth,

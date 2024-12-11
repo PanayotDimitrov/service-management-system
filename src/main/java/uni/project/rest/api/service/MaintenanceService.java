@@ -117,31 +117,6 @@ public class MaintenanceService {
     }
 
 
-//    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(Long garageId, LocalDate startMonth, LocalDate endMonth) {
-//
-//        List<Object[]> rawResults = maintenanceRepository.findMonthlyRequestsReportRaw(garageId, startMonth, endMonth);
-//
-//        return rawResults.stream().map(result ->{
-//
-//            int year = ((Number) result[0]).intValue();
-//            int monthValue = ((Number) result[1]).intValue();
-//            long requests = ((Number) result[2]).longValue();
-//
-//
-//            String monthName = Month.of(monthValue).name();
-//
-//            MonthlyRequestsReportDTO.YearMonthDetail yearMonthDetail = new MonthlyRequestsReportDTO.YearMonthDetail();
-//            yearMonthDetail.setYear(year);
-//            yearMonthDetail.setMonth(monthName);
-//            yearMonthDetail.setMonthValue(monthValue);
-//            yearMonthDetail.setLeapYear(java.time.Year.of(year).isLeap());
-//
-//            return new MonthlyRequestsReportDTO(yearMonthDetail,(int) requests);
-//        }).collect(Collectors.toList());
-//
-//
-//    }
-
     public List<Map<String,Object>> getMonthlyRequestsReport(Long garageId,LocalDate startMonth, LocalDate endMonth) {
     List<Object[]> rawResults = maintenanceRepository.findMonthlyRequestsReportRaw(garageId, startMonth, endMonth);
 
