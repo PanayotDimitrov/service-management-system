@@ -3,6 +3,7 @@ package uni.project.rest.api.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import uni.project.rest.api.service.MaintenanceService;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/maintenance")
@@ -57,16 +59,27 @@ public class MaintenanceController {
 
     @GetMapping("/monthlyRequestsReport")
     @CrossOrigin("http://Localhost:3000/maintenance/monthlyRequestsReport")
-    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
-            @RequestParam Long garageId,
+//    public List<MonthlyRequestsReportDTO> getMonthlyRequestsReport(
+//            @RequestParam Long garageId,
+//            @RequestParam String startMonth,
+//            @RequestParam String endMonth) {
+//        LocalDate startDate = LocalDate.parse(startMonth + "-01");
+//        LocalDate endDate = LocalDate.parse(endMonth + "-01").withDayOfMonth(
+//                YearMonth.from(LocalDate.parse(endMonth + "-01")).lengthOfMonth()
+//        );
+//        return maintenanceService.getMonthlyRequestsReport(garageId, startDate, endDate);
+//    }
+    public List<Map<String,Object>> getMonthlyRequestsReport(
+            @RequestParam(required = false) Long garageId,
             @RequestParam String startMonth,
-            @RequestParam String endMonth) {
+            @RequestParam String endMonth
+    ) {
         LocalDate startDate = LocalDate.parse(startMonth + "-01");
-        LocalDate endDate = LocalDate.parse(endMonth + "-01").withDayOfMonth(
-                YearMonth.from(LocalDate.parse(endMonth + "-01")).lengthOfMonth()
-        );
+        LocalDate endDate = LocalDate.parse(endMonth + "-01")
+                .withDayOfMonth(YearMonth.from(LocalDate.parse(endMonth + "-01")).lengthOfMonth());
         return maintenanceService.getMonthlyRequestsReport(garageId, startDate, endDate);
     }
+
 
     @GetMapping
     public ResponseEntity<List<ResponseMaintenanceDTO>> getAllMaintenance(

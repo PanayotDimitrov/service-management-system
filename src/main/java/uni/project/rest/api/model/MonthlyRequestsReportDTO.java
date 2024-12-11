@@ -17,6 +17,7 @@ public class MonthlyRequestsReportDTO {
 
     @Getter
     @Setter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class YearMonthDetail {

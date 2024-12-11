@@ -33,4 +33,7 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
     List<Object[]> findMonthlyRequestsReportRaw(@Param("garageId") Long garageId,
                                                 @Param("startMonth") LocalDate startMonth,
                                                 @Param("endMonth") LocalDate endMonth);
+
+
+
 }
