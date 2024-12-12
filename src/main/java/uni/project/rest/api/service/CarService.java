@@ -59,16 +59,13 @@ public class CarService {
 
         Car car = entityManager.find(Car.class, id);
 
-//        if (car != null) {
-//            throw new RuntimeException("Car with ID "+ id + " not found");
-//        }
-
         car.setMake(updateCarDTO.getMake());
         car.setModel(updateCarDTO.getModel());
         car.setProductionYear(updateCarDTO.getProductionYear());
         car.setLicensePlate(updateCarDTO.getLicensePlate());
 
         List<Garage> garages = garageRepository.findAllById(updateCarDTO.getGarageIds());
+
         car.setGarages(garages);
 
         entityManager.merge(car);
@@ -78,16 +75,19 @@ public class CarService {
 
     @Transactional
     public ResponseCarDTO addCar(CreateCarDTO createCarDTO) {
+
         Car car = new Car();
+
         car.setMake(createCarDTO.getMake());
         car.setModel(createCarDTO.getModel());
         car.setProductionYear(createCarDTO.getProductionYear());
         car.setLicensePlate(createCarDTO.getLicensePlate());
 
         List<Garage> garages = garageRepository.findAllById(createCarDTO.getGarageIds());
+
         car.setGarages(garages);
 
-        carRepository.save(car);
+        entityManager.merge(car);
 
         return mapToResponseDTO(car);
     }
