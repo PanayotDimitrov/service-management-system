@@ -56,13 +56,13 @@ public class CarController {
     }
 
     @PutMapping("/cars/{id}")
-    @CrossOrigin("http://Localhost:3000/cars/{id}")
+    @CrossOrigin("http://localhost:3000/cars/{carToUpdate.id}")
     public ResponseCarDTO updateCar(@PathVariable Long id, @RequestBody UpdateCarDTO updateCarDTO) {
         return carService.updateCar(id,updateCarDTO);
     }
 
     @DeleteMapping("/cars/{id}")
-    @CrossOrigin("http://Localhost:3000/cars/{id}")
+    @CrossOrigin("http://localhost:3000/cars/{carId}")
     public void deleteCar(@PathVariable Long id) {
         carService.deleteCarById(id);
     }
