@@ -32,18 +32,28 @@ public class MaintenanceController {
     @PostMapping("/maintenance")
     @CrossOrigin("http://Localhost:3000/maintenance")
     public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
-
         return maintenanceService.createMaintenance(dto);
     }
 
     @GetMapping("maintenance/{id}")
     @CrossOrigin("http://Localhost:3000/maintenance/{id}")
-    public ResponseMaintenanceDTO getMaintenanceById(@PathVariable Long id) {
-        return maintenanceService.getMaintenanceById(id);
+    public ResponseEntity<ResponseMaintenanceDTO> getMaintenanceById(@PathVariable Long id) {
+        try{
+            ResponseMaintenanceDTO dto = maintenanceService.getMaintenanceById(id);
+            if (dto == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            else if (id == null || id <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            return ResponseEntity.ok(maintenanceService.getMaintenanceById(id));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();}
     }
 
+
     @PutMapping("maintenance/{id}")
-    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
+    @CrossOrigin("http://localhost:8088/maintenance/{recordToUpdate.id}")
     public ResponseMaintenanceDTO updateMaintenanceById(
             @PathVariable Long id,
             @RequestBody UpdateMaintenanceDTO updateMaintenanceDTO) {

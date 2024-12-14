@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://Localhost:3000")
+@CrossOrigin("http://localhost:3000")
 public class CarController {
 
     @Autowired
@@ -50,19 +50,19 @@ public class CarController {
 
 
     @PostMapping("/cars")
-    @CrossOrigin("http://Localhost:3000/cars")
+    @CrossOrigin("http://127.0.0.1:3000/cars")
     public ResponseCarDTO createCar (@RequestBody CreateCarDTO createCarDTO) {
         return carService.addCar(createCarDTO);
     }
 
     @PutMapping("/cars/{id}")
-    @CrossOrigin("http://localhost:3000/cars/{carToUpdate.id}")
+    @CrossOrigin("http://127.0.0.1:3000/cars/{carToUpdate.id}")
     public ResponseCarDTO updateCar(@PathVariable Long id, @RequestBody UpdateCarDTO updateCarDTO) {
         return carService.updateCar(id,updateCarDTO);
     }
 
     @DeleteMapping("/cars/{id}")
-    @CrossOrigin("http://localhost:3000/cars/{carId}")
+    @CrossOrigin("http://127.0.0.1:3000/cars/{carId}")
     public void deleteCar(@PathVariable Long id) {
         carService.deleteCarById(id);
     }
