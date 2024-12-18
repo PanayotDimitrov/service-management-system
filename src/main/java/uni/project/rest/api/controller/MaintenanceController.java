@@ -1,17 +1,13 @@
 package uni.project.rest.api.controller;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uni.project.rest.api.entity.Garage;
 import uni.project.rest.api.entity.Maintenance;
 import uni.project.rest.api.model.*;
-import uni.project.rest.api.repository.GarageRepository;
 import uni.project.rest.api.service.MaintenanceService;
 
 import java.time.LocalDate;
@@ -20,23 +16,24 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("http://Localhost:3000")
+@CrossOrigin("*")
 public class MaintenanceController {
 
-    @Autowired
-    private MaintenanceService maintenanceService;
+
+    private final MaintenanceService maintenanceService;
+
 
     @Autowired
-    private GarageRepository garageRepository;
+    public MaintenanceController(MaintenanceService maintenanceService) {
+        this.maintenanceService = maintenanceService;
+    }
 
     @PostMapping("/maintenance")
-    @CrossOrigin("http://Localhost:3000/maintenance")
     public ResponseMaintenanceDTO createMaintenance(@RequestBody CreateMaintenanceDTO dto) {
         return maintenanceService.createMaintenance(dto);
     }
 
     @GetMapping("maintenance/{id}")
-    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public ResponseEntity<ResponseMaintenanceDTO> getMaintenanceById(@PathVariable Long id) {
         try{
             ResponseMaintenanceDTO dto = maintenanceService.getMaintenanceById(id);
@@ -53,7 +50,6 @@ public class MaintenanceController {
 
 
     @PutMapping("maintenance/{id}")
-    @CrossOrigin("http://localhost:8088/maintenance/{recordToUpdate.id}")
     public ResponseMaintenanceDTO updateMaintenanceById(
             @PathVariable Long id,
             @RequestBody UpdateMaintenanceDTO updateMaintenanceDTO) {
@@ -61,13 +57,11 @@ public class MaintenanceController {
     }
 
     @DeleteMapping("maintenance/{id}")
-    @CrossOrigin("http://Localhost:3000/maintenance/{id}")
     public void deleteMaintenanceById(@PathVariable Long id) {
         maintenanceService.deleteMaintenanceById(id);
     }
 
     @GetMapping("maintenance/monthlyRequestsReport")
-    @CrossOrigin("http://Localhost:3000/maintenance/monthlyRequestsReport")
     public List<Map<String,Object>> getMonthlyRequestsReport(
             @RequestParam(required = false) Long garageId,
             @RequestParam String startMonth,
@@ -81,7 +75,6 @@ public class MaintenanceController {
 
 
     @GetMapping("/maintenance")
-    @CrossOrigin("http://localhost:3000/maintenance")
     public List<Maintenance> getAllMaintenance(
             @RequestParam(required = false) Long carId,
             @RequestParam(required = false) Long garageId,

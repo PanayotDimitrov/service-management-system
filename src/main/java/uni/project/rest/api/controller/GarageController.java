@@ -15,15 +15,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class GarageController {
 
-    @Autowired
-    private GarageService garageService;
 
+    private final GarageService garageService;
+
+    @Autowired
+    public GarageController(GarageService garageService) {
+        this.garageService = garageService;
+    }
 
     @PostMapping("/garages")
-    @CrossOrigin("http://localhost:3000/garages")
     public Garage createGarage(@RequestBody CreateGarageDTO createGarageDTO) {
         return garageService.createGarage(createGarageDTO);
     }
@@ -31,7 +34,6 @@ public class GarageController {
 //    --------------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/garages")
-    @CrossOrigin("http://localhost:3000/garages")
     public List<Garage> getGarageByCity(@RequestParam(required = false) String city) {
         if (city == null || city.isEmpty()) {
             return garageService.getAllGarages();
@@ -44,13 +46,11 @@ public class GarageController {
 
 
     @GetMapping("/garages/{id}")
-    @CrossOrigin("http://localhost:3000/garages/{id}")
     public ResponseGarageDTO getGarageDTOById(@PathVariable Long id) {
         return garageService.getGarageById(id);
     }
 
     @GetMapping("/garages/dailyAvailabilityReport")
-    @CrossOrigin("http://localhost:3000/garages/dailyAvailabilityReport")
     public ResponseEntity<List<GarageDailyAvailabilityReportDTO>> getGarageDailyAvailabilityReport(
             @RequestParam Long garageId,
             @RequestParam LocalDate startDate,
@@ -60,7 +60,6 @@ public class GarageController {
 
 
     @PutMapping("/garages/{id}")
-    @CrossOrigin("http://localhost:3000/garages/{id}")
     public ResponseGarageDTO updateGarage(
             @PathVariable Long id,
             @RequestBody UpdateGarageDTO updateGarageDTO) {
@@ -78,7 +77,6 @@ public class GarageController {
 
 
     @DeleteMapping("/garages/{id}")
-    @CrossOrigin("http://localhost:3000/garages/{id}")
     public void deleteGarage(@PathVariable Long id) {
         garageService.deleteGarageById(id);
     }

@@ -1,6 +1,7 @@
 package uni.project.rest.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,24 +22,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MaintenanceService {
 
-    @Autowired
     private final MaintenanceRepository maintenanceRepository;
 
-    @Autowired
     private final CarRepository carRepository;
 
-    @Autowired
     private final GarageRepository garageRepository;
-
-    public MaintenanceService(MaintenanceRepository maintenanceRepository, CarRepository carRepository, GarageRepository garageRepository) {
-        this.maintenanceRepository = maintenanceRepository;
-        this.carRepository = carRepository;
-        this.garageRepository = garageRepository;
-    }
-
-
+    
 @Transactional
     public ResponseMaintenanceDTO createMaintenance(CreateMaintenanceDTO createMaintenanceDTO) {
         // Validate if car exists

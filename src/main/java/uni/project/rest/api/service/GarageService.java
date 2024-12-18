@@ -21,10 +21,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class GarageService {
 
-    @Autowired
     private GarageRepository garageRepository;
 
-    @Autowired
     private EntityManager entityManager;
 
 @Transactional

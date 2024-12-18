@@ -14,24 +14,18 @@ import uni.project.rest.api.model.UpdateCarDTO;
 import uni.project.rest.api.repository.CarRepository;
 import uni.project.rest.api.repository.GarageRepository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CarService {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    @Autowired
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
-    @Autowired
-    private GarageRepository garageRepository;
+    private final GarageRepository garageRepository;
 
 
     public List<Car> getCarsByFilters(String make,
@@ -46,6 +40,8 @@ public class CarService {
    }
 
     public Car getCarById(Long id) {
+//        return Optional.ofNullable(entityManager.find(Car.class, id))
+//                .orElseThrow(() -> new ResourceNotFoundException("Car with ID " + id + " not found"));
         return entityManager.find(Car.class, id);
     }
 
