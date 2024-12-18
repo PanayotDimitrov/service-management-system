@@ -1,16 +1,23 @@
 package uni.project.rest.api.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uni.project.rest.api.entity.Car;
+import uni.project.rest.api.exception.ResourceNotFoundException404;
 import uni.project.rest.api.model.CreateCarDTO;
 import uni.project.rest.api.model.ResponseCarDTO;
 import uni.project.rest.api.model.UpdateCarDTO;
 import uni.project.rest.api.service.CarService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -42,20 +49,16 @@ public class CarController {
         }
     }
 
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Resource found" , content = {@Content(mediaType = "application/json",
+//            schema = @Schema(implementation = ResponseCarDTO.class))}),
+//            @ApiResponse(responseCode = "404", description = "Car not found", content = @Content),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
+//    })
     @GetMapping("/cars/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable(required = false) Long id) {
-        Car car = carService.getCarById(id);
-        if (id == null || id <=0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else if (car == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(car, HttpStatus.OK);
-
+        return new ResponseEntity<>(carService.getCarById(id), HttpStatus.OK);
     }
-
-
 
     @PostMapping("/cars")
     public ResponseCarDTO createCar (@RequestBody CreateCarDTO createCarDTO) {

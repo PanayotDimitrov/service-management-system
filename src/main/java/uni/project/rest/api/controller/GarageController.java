@@ -5,11 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uni.project.rest.api.entity.Garage;
+import uni.project.rest.api.exception.BadRequestException;
+import uni.project.rest.api.exception.ResourceNotFoundException404;
 import uni.project.rest.api.model.CreateGarageDTO;
 import uni.project.rest.api.model.GarageDailyAvailabilityReportDTO;
 import uni.project.rest.api.model.ResponseGarageDTO;
 import uni.project.rest.api.model.UpdateGarageDTO;
 import uni.project.rest.api.service.GarageService;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,11 +37,24 @@ public class GarageController {
 //    --------------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/garages")
-    public List<Garage> getGarageByCity(@RequestParam(required = false) String city) {
+    public List<Garage> getGarageByCity(@RequestParam(required = false) String city) throws BadRequestException {
+        boolean flag = true;
+        for (int i = 0; i < city.length(); i++) {
+            if (i==0 && city.charAt(i) == '_')
+                continue;
+            if ( !Character.isDigit(city.charAt(i)))
+                flag = false;
+        }
+
         if (city == null || city.isEmpty()) {
-            return garageService.getAllGarages();
-        }else {
-            return garageService.getAllGaragesByCity(city);
+                return garageService.getAllGarages();
+        }
+        else {
+            if (flag){
+                throw new BadRequestException("City must be a string");
+            }else {
+                return garageService.getAllGaragesByCity(city);
+            }
         }
     }
 

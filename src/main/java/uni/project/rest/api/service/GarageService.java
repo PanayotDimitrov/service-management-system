@@ -4,9 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uni.project.rest.api.entity.Garage;
+import uni.project.rest.api.exception.ResourceNotFoundException404;
 import uni.project.rest.api.model.CreateGarageDTO;
 import uni.project.rest.api.model.GarageDailyAvailabilityReportDTO;
 import uni.project.rest.api.model.ResponseGarageDTO;
@@ -25,22 +28,9 @@ public class GarageService {
 
     private EntityManager entityManager;
 
-@Transactional
-    public Garage createGarage(CreateGarageDTO createGarageDTO){
-
-        Garage garage = new Garage();
-        garage.setName(createGarageDTO.getName());
-        garage.setLocation(createGarageDTO.getLocation());
-        garage.setCity(createGarageDTO.getCity());
-        garage.setCapacity(createGarageDTO.getCapacity());
-        entityManager.persist(garage);
-        return garage;
-
-    }
-
     public ResponseGarageDTO getGarageById(Long garageId) {
         Garage garage = garageRepository.findById(garageId)
-                .orElseThrow(() -> new RuntimeException("Garage not found"));
+                .orElseThrow(() -> new ResourceNotFoundException404("Garage not found"));
 
         return new ResponseGarageDTO(
                 garage.getId(),
@@ -54,7 +44,7 @@ public class GarageService {
     @Transactional
     public ResponseGarageDTO updateGarage(Long garageId, UpdateGarageDTO updateGarageDTO) {
         Garage garage = garageRepository.findById(garageId)
-                .orElseThrow(() -> new RuntimeException("Garage not found"));
+                .orElseThrow(() -> new ResourceNotFoundException404("Garage not found"));
 
         garage.setName(updateGarageDTO.getName());
         garage.setLocation(updateGarageDTO.getLocation());
@@ -71,26 +61,44 @@ public class GarageService {
                 garage.getCapacity()
         );
     }
+
     @Transactional
     public void deleteGarageById(Long garageId) {
-        garageRepository.delete(getGarageByIdForDelete(garageId));
-}
-
-    public Garage getGarageByIdForDelete(Long garageId) {
-    return entityManager.find(Garage.class, garageId);
+//        garageRepository.delete(getGarageByIdForDelete(garageId));
+        Garage garageToDelete = garageRepository.findById(garageId).orElseThrow(() -> new ResourceNotFoundException404("Garage not found"));
+        garageRepository.delete(garageToDelete);
     }
 
-
     public List<Garage> getAllGaragesByCity(String city) {
-        TypedQuery<Garage> filteredGarages = entityManager.createQuery(
-                "select e from Garage e where e.city = :city", Garage.class
-        );
-        filteredGarages.setParameter("city", city);
-        return filteredGarages.getResultList();
+
+            TypedQuery<Garage> filteredGarages = entityManager.createQuery(
+                    "select e from Garage e where e.city = :city", Garage.class
+            );
+            filteredGarages.setParameter("city", city);
+            List<Garage> resultList = filteredGarages.getResultList();
+            return resultList;
+
     }
 
     public List<Garage> getAllGarages() {
         return garageRepository.findAll();
+    }
+
+    public Garage getGarageByIdForDelete(Long garageId) {
+        return entityManager.find(Garage.class, garageId);
+    }
+
+    @Transactional
+    public Garage createGarage(CreateGarageDTO createGarageDTO){
+
+        Garage garage = new Garage();
+        garage.setName(createGarageDTO.getName());
+        garage.setLocation(createGarageDTO.getLocation());
+        garage.setCity(createGarageDTO.getCity());
+        garage.setCapacity(createGarageDTO.getCapacity());
+        entityManager.persist(garage);
+        return garage;
+
     }
 
 
@@ -110,8 +118,6 @@ public class GarageService {
                 })
                 .collect(Collectors.toList());
     }
-
-
 
 
     public ResponseGarageDTO mapGarageToResponseDTO(Garage garage) {

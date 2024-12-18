@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uni.project.rest.api.entity.Car;
 import uni.project.rest.api.entity.Garage;
+import uni.project.rest.api.exception.ResourceNotFoundException404;
 import uni.project.rest.api.model.CreateCarDTO;
 import uni.project.rest.api.model.ResponseCarDTO;
 import uni.project.rest.api.model.ResponseGarageDTO;
@@ -15,6 +16,7 @@ import uni.project.rest.api.repository.CarRepository;
 import uni.project.rest.api.repository.GarageRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -40,9 +42,7 @@ public class CarService {
    }
 
     public Car getCarById(Long id) {
-//        return Optional.ofNullable(entityManager.find(Car.class, id))
-//                .orElseThrow(() -> new ResourceNotFoundException("Car with ID " + id + " not found"));
-        return entityManager.find(Car.class, id);
+        return carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException404("Car not found"));
     }
 
     @Transactional
