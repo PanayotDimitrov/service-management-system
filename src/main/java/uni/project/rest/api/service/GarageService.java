@@ -122,6 +122,9 @@ public class GarageService {
                 .collect(Collectors.toList());
     }
 
+    public boolean isGarageExists(Long garageId) {
+        return garageRepository.existsById(garageId);
+    }
 
     public ResponseGarageDTO mapGarageToResponseDTO(Garage garage) {
         return new ResponseGarageDTO(
