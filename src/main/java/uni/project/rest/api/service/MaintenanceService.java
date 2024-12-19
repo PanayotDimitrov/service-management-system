@@ -17,9 +17,7 @@ import uni.project.rest.api.repository.MaintenanceRepository;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,26 +83,42 @@ public class MaintenanceService {
        return mapMaintanceToResponseDTO(maintenance);
     }
 
-
-    public List<Map<String,Object>> getMonthlyRequestsReport(Long garageId,LocalDate startMonth, LocalDate endMonth) {
+    public List<Map<String, Object>> getMonthlyRequestsReport(Long garageId, LocalDate startMonth, LocalDate endMonth) {
         List<Object[]> rawResults = maintenanceRepository.findMonthlyRequestsReportRaw(garageId, startMonth, endMonth);
 
-        return rawResults.stream().map(result -> {
-            int year = ((Number) result[0]).intValue();
-            int monthValue = ((Number) result[1]).intValue();
-            long requests = ((Number) result[2]).longValue();
+        Map<String, Map<String, Object>> monthMap = new LinkedHashMap<>();
 
+        LocalDate currentMonth = startMonth.withDayOfMonth(1); // Ensure it's the first day of the month
+        while (!currentMonth.isAfter(endMonth)) {
+            int year = currentMonth.getYear();
+            int monthValue = currentMonth.getMonthValue();
             String monthName = Month.of(monthValue).name();
             monthName = year + " " + monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
+
             Map<String, Object> record = new HashMap<>();
             record.put("year", year);
             record.put("yearMonth", monthName);
             record.put("monthValue", monthValue);
             record.put("isLeap", java.time.Year.of(year).isLeap());
-            record.put("requests", requests);
+            record.put("requests", 0L); // Default to 0 requests
 
-            return record;
-        }).collect(Collectors.toList());
+            monthMap.put(year + "-" + monthValue, record);
+
+            currentMonth = currentMonth.plusMonths(1); // Move to the next month
+        }
+
+        for (Object[] result : rawResults) {
+            int year = ((Number) result[0]).intValue();
+            int monthValue = ((Number) result[1]).intValue();
+            long requests = ((Number) result[2]).longValue();
+
+            String key = year + "-" + monthValue;
+            if (monthMap.containsKey(key)) {
+                monthMap.get(key).put("requests", requests);
+            }
+        }
+
+        return new ArrayList<>(monthMap.values());
     }
 
 
