@@ -95,7 +95,7 @@ public class MaintenanceService {
             long requests = ((Number) result[2]).longValue();
 
             String monthName = Month.of(monthValue).name();
-            monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1)+ " " +year;
+            monthName = year + " " + monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
             Map<String, Object> record = new HashMap<>();
             record.put("year", year);
             record.put("yearMonth", monthName);
