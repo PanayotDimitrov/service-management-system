@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uni.project.rest.api.entity.Garage;
+import uni.project.rest.api.exception.BadRequestException;
 import uni.project.rest.api.exception.ResourceNotFoundException404;
 import uni.project.rest.api.model.CreateGarageDTO;
 import uni.project.rest.api.model.GarageDailyAvailabilityReportDTO;
@@ -64,20 +65,21 @@ public class GarageService {
 
     @Transactional
     public void deleteGarageById(Long garageId) {
-//        garageRepository.delete(getGarageByIdForDelete(garageId));
         Garage garageToDelete = garageRepository.findById(garageId).orElseThrow(() -> new ResourceNotFoundException404("Garage not found"));
         garageRepository.delete(garageToDelete);
     }
 
-    public List<Garage> getAllGaragesByCity(String city) {
-
-            TypedQuery<Garage> filteredGarages = entityManager.createQuery(
-                    "select e from Garage e where e.city = :city", Garage.class
-            );
-            filteredGarages.setParameter("city", city);
-            List<Garage> resultList = filteredGarages.getResultList();
-            return resultList;
-
+    public List<Garage> getAllGaragesByCity(String city) throws BadRequestException {
+       try {
+           TypedQuery<Garage> filteredGarages = entityManager.createQuery(
+                   "select e from Garage e where e.city = :city", Garage.class
+           );
+           filteredGarages.setParameter("city", city);
+           List<Garage> resultList = filteredGarages.getResultList();
+           return resultList;
+       } catch (Exception e) {
+           throw new BadRequestException("City not found");
+       }
     }
 
     public List<Garage> getAllGarages() {
@@ -92,6 +94,7 @@ public class GarageService {
     public Garage createGarage(CreateGarageDTO createGarageDTO){
 
         Garage garage = new Garage();
+
         garage.setName(createGarageDTO.getName());
         garage.setLocation(createGarageDTO.getLocation());
         garage.setCity(createGarageDTO.getCity());
@@ -111,7 +114,7 @@ public class GarageService {
                     Long requests = (Long) data[1];
 
                     Garage garage = garageRepository.findById(garageId)
-                            .orElseThrow(() -> new RuntimeException("Garage not found"));
+                            .orElseThrow(() -> new ResourceNotFoundException404("Garage not found"));
                     int availableCapacity = garage.getCapacity() - requests.intValue();
 
                     return new GarageDailyAvailabilityReportDTO(date, requests.intValue(), availableCapacity);

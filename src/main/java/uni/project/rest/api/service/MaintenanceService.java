@@ -67,13 +67,11 @@ public class MaintenanceService {
     public ResponseMaintenanceDTO createMaintenance(CreateMaintenanceDTO createMaintenanceDTO) {
         // Validate if car exists
         if (!carRepository.existsById(createMaintenanceDTO.getCarId())) {
-//            throw new EntityNotFoundException("Car not found with ID: " + createMaintenanceDTO.getCarId());
             throw new ResourceNotFoundException404("Car not found");
         }
 
         // Validate if garage exists
         if (!garageRepository.existsById(createMaintenanceDTO.getGarageId())) {
-//            throw new EntityNotFoundException("Garage not found with ID: " + createMaintenanceDTO.getGarageId());
             throw new ResourceNotFoundException404("Garage not found");
         }
 
@@ -97,8 +95,7 @@ public class MaintenanceService {
             long requests = ((Number) result[2]).longValue();
 
             String monthName = Month.of(monthValue).name();
-            monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
-
+            monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1)+ " " +year;
             Map<String, Object> record = new HashMap<>();
             record.put("year", year);
             record.put("yearMonth", monthName);

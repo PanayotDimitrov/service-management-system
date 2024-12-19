@@ -38,24 +38,11 @@ public class GarageController {
 
     @GetMapping("/garages")
     public List<Garage> getGarageByCity(@RequestParam(required = false) String city) throws BadRequestException {
-        boolean flag = true;
-        for (int i = 0; i < city.length(); i++) {
-            if (i==0 && city.charAt(i) == '_')
-                continue;
-            if ( !Character.isDigit(city.charAt(i)))
-                flag = false;
-        }
-
-        if (city == null || city.isEmpty()) {
-                return garageService.getAllGarages();
-        }
-        else {
-            if (flag){
-                throw new BadRequestException("City must be a string");
-            }else {
-                return garageService.getAllGaragesByCity(city);
-            }
-        }
+    if (city == null || city.isEmpty()) {
+        return garageService.getAllGarages();
+    }else{
+        return garageService.getAllGaragesByCity(city);
+    }
     }
 
 //    --------------------------------------------------------------------------------------------------------------------------------
